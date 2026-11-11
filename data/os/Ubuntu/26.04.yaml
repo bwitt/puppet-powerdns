@@ -1,0 +1,4 @@
+---
+# repo.powerdns.com has no auth-49 or rec-50 for resolute
+powerdns::authoritative_version: '5.1'
+powerdns::recursor_version: '5.4'

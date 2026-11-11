@@ -51,6 +51,15 @@ describe 'powerdns', type: :class do
           recursor_dir = '/etc/powerdns'
         end
 
+        # Ubuntu 26.04 defaults to newer versions
+        if facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'] == '26.04'
+          auth_short_version = '51'
+          rec_short_version = '54'
+        else
+          auth_short_version = '49'
+          rec_short_version = '50'
+        end
+
         context 'powerdns class without parameters' do
           it {
             is_expected.to raise_error(
@@ -121,9 +130,9 @@ describe 'powerdns', type: :class do
             it { is_expected.to contain_apt__keyring('powerdns.asc') }
             it { is_expected.to contain_apt__pin('powerdns') }
             it { is_expected.to contain_apt__source('powerdns') }
-            it { is_expected.to contain_apt__source('powerdns').with_release(%r{auth-49}) }
+            it { is_expected.to contain_apt__source('powerdns').with_release(%r{auth-#{auth_short_version}}) }
             it { is_expected.to contain_apt__source('powerdns-recursor') }
-            it { is_expected.to contain_apt__source('powerdns-recursor').with_release(%r{rec-50}) }
+            it { is_expected.to contain_apt__source('powerdns-recursor').with_release(%r{rec-#{rec_short_version}}) }
             it { is_expected.to contain_package('dirmngr') }
           end
 
